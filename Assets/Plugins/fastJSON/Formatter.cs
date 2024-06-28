@@ -4,21 +4,15 @@ namespace fastJSON
 {
     internal static class Formatter
     {
-        //private static string _indent = "   ";
+        public static string Indent = "    ";
 
-        private static void AppendIndent(StringBuilder sb, int count, string indent)
+        public static void AppendIndent(StringBuilder sb, int count)
         {
-            for (; count > 0; --count) sb.Append(indent);
+            for (; count > 0; --count) sb.Append(Indent);
         }
 
         public static string PrettyPrint(string input)
         {
-            return PrettyPrint(input, new string(' ', JSON.Parameters.FormatterIndentSpaces));// "   ");
-        }
-
-        public static string PrettyPrint(string input, string spaces)
-        {
-            //_indent = spaces;
             var output = new StringBuilder();
             int depth = 0;
             int len = input.Length;
@@ -50,18 +44,18 @@ namespace fastJSON
                     case '[':
                         output.Append(ch);
                         output.AppendLine();
-                        AppendIndent(output, ++depth, spaces);
+                        AppendIndent(output, ++depth);
                         break;
                     case '}':
                     case ']':
                         output.AppendLine();
-                        AppendIndent(output, --depth, spaces);
+                        AppendIndent(output, --depth);
                         output.Append(ch);
                         break;
                     case ',':
                         output.Append(ch);
                         output.AppendLine();
-                        AppendIndent(output, depth, spaces);
+                        AppendIndent(output, depth);
                         break;
                     case ':':
                         output.Append(" : ");

@@ -1,17 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
 
 namespace fastJSON
 {
-    public class ReferenceEqualityComparer : IEqualityComparer, IEqualityComparer<object>
-    {
-        public static ReferenceEqualityComparer Default { get; } = new ReferenceEqualityComparer();
-
-        public new bool Equals(object x, object y) => x.Equals(y);
-        public int GetHashCode(object obj) => RuntimeHelpers.GetHashCode(obj); 
-    }
-
     public sealed class SafeDictionary<TKey, TValue>
     {
         private readonly object _Padlock = new object();
@@ -33,10 +23,7 @@ namespace fastJSON
                 return _Dictionary.TryGetValue(key, out value);
         }
 
-        public int Count()
-        {
-            lock (_Padlock) return _Dictionary.Count;
-        }
+        public int Count { get { lock (_Padlock) return _Dictionary.Count; } }
 
         public TValue this[TKey key]
         {
